@@ -1,0 +1,38 @@
+package com.faceclient.sdk.util;
+
+import java.io.*;
+
+public class FileUtil {
+    public static byte[] file2Bytes(String filename) {
+        File f = new File(filename);
+        if (!f.exists()) {
+            return null;
+        }
+        ByteArrayOutputStream bos = new ByteArrayOutputStream((int) f.length());
+        BufferedInputStream in = null;
+        try {
+            in = new BufferedInputStream(new FileInputStream(f));
+            int buf_size = 1024;
+            byte[] buffer = new byte[buf_size];
+            int len = 0;
+            while (-1 != (len = in.read(buffer, 0, buf_size))) {
+                bos.write(buffer, 0, len);
+            }
+            return bos.toByteArray();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                in.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                bos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+}
